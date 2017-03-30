@@ -21,8 +21,8 @@ PImage inputImage, edgesImage;
 ArrayList<ArrayList<PVector>> lines;
 
 // Dimensions of the input video.
-int videoWidth = 320;
-int videoHeight = 240;
+int videoWidth = 1280;
+int videoHeight = 720;
 
 // Dimensions of the paper (in millimeters).
 int paperWidth = 105;
@@ -46,7 +46,7 @@ int complexity = 1;
 
 void setup() {
   frameRate(30);
-  size(sketchWidth, sketchHeight);
+  size(1280, 720);
   video = new Capture(this, videoWidth, videoHeight);
   video.start();
   cp5 = new ControlP5(this);
@@ -99,6 +99,7 @@ void draw() {
 void keyPressed() {
   if (key == ' ') {
     exportToGcode(lines);
+    saveFrame("./Export/selfie-" + dateNow() + ".png");
   }
 }
 

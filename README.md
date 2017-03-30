@@ -1,18 +1,24 @@
 Selfiebot
 =========
-Selfiebot is a drawing robot that draws quick selfie images. This is a Processing sketch that converts the images to G-code using a canny edge detection.
+This is a modified version of the [original selfiebot project](https://github.com/nodebox/selfiebot). Selfiebot is a drawing robot that draws quick selfie images. This is a Processing sketch that converts the images to G-code using a canny edge detection. See some examples in the `Export` folder.
 
-![Demo selfiebot output](https://raw.github.com/nodebox/selfiebot/master/g/selfie.jpg)
+![Demo selfiebot output](./g/selfie.jpg)
+
+Modifications
+=============
+At the moment it has been added a `.png` image for fab modules and soon it will write directly a `.camm` file for the Roland Vinyl Cutters.
+
+> WIP porting the G-Code to the Roland CAMM-GL III file format.
 
 Usage
 =====
 1. Download [Processing](http://processing.org/download/).
-2. Download and install the [controlP5 library](http://www.sojamo.de/libraries/controlP5/)
+2. Download and install the [controlP5 library](http://www.sojamo.de/libraries/controlP5/) and the video library.
 3. Open the sketch and run it.
 4. Stand in front of the webcam.
-5. Press the spacebar to export the current image to G-code.
-6. Import G-code file into Makelangelo software while drawbot is running.
-7. Calibrate the pen and start drawing.
+5. Press the spacebar to export the current image to G-code, image (in the future `.camm` file).
+6. Load the Roland Vinyl Cutter with a piece of paper and replace the blade with the [penholder adapter](https://github.com/TheBeachLab/Roland_VinylDraw) and your favourite bic pen, pencil or marker.
+7. Import the `.png` file into Fab Modules and proceed as if you were cutting vinyl.
 
 Credits
 =======
