@@ -1,6 +1,6 @@
 Selfiebot
 =========
-This is a modified version of the [original selfiebot project](https://github.com/nodebox/selfiebot). Selfiebot is a drawing robot that draws quick selfie images. This is a Processing sketch that converts the images to G-code using a canny edge detection. See some examples in the `Export` folder.
+This is a modified version of the [original selfiebot project](https://github.com/nodebox/selfiebot). Selfiebot is a drawing robot that draws quick selfie images. This is a Processing sketch that converts the images to G-code using a canny edge detection. See some examples in the `Samples` folder.
 
 ![Demo selfiebot output](./g/selfie.jpg)
 
