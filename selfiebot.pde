@@ -1,8 +1,9 @@
 /*
  *** Selfiebot ***
- *** This sketch converts a webcam image to GCode using canny edge detection. 
- *** Written by TODO.TO.IT / Giorgio Olivero
- *** Heavily modified by Lieven Menschaert and Frederik De Bleser, EMRG (www.emrg.be) 
+ *** This sketch converts a webcam image to Roland CAMM-GL III using canny edge detection.
+ *** Original code Written by TODO.TO.IT / Giorgio Olivero
+ *** Heavily modified by Lieven Menschaert and Frederik De Bleser, EMRG (www.emrg.be)
+ *** Further modified by Francisco Sanchez (www.beachlab.org) to incorporate CAMM-GL III Instructions list
  *** This software is released under
  *** Creative Commons Attribution-NonCommercial-ShareAlike 3.0 CC BY-NC-SA
  *** http://creativecommons.org/licenses/by-nc-sa/3.0/
@@ -25,20 +26,16 @@ int videoWidth = 1280;
 int videoHeight = 720;
 
 // Dimensions of the paper (in millimeters).
-int paperWidth = 105;
-int paperHeight = 105;
+int paperWidth = 297;  // A4
+int paperHeight = 210;
 
 // Dimensions of the Processing applet.
 int sketchWidth = videoWidth;
 int sketchHeight = videoHeight;
 
-// Define pen UP and DOWN positions
-float penUp = 90.0;
-float penDown = 0.0;
-
-// Define Feed rate (stepper motors speed)
-float motorFeedSlow = 100.0;
-float motorFeedFast = 1000.0;
+// Define Roland Vinyl Cutter Velocity and Force (GS-24 GX-24)
+float velocity = 10.0; // cm/s
+float force = 120.0;   // g
 
 int divider = 1;
 PImage test;
@@ -50,14 +47,14 @@ void setup() {
   video = new Capture(this, videoWidth, videoHeight);
   video.start();
   cp5 = new ControlP5(this);
-  
+
   cp5.addSlider("complexity")
      .setPosition(20,height-20)
      .setRange(1,4)
      .setColorBackground(color(200))
      .setColorCaptionLabel(color(0))
      ;
-  
+
   seg = 5;
   background(255); // white background
   noFill(); // shapes will have no fill
@@ -82,7 +79,7 @@ void draw() {
   detector.process();
   edgesImage = new PImage(detector.getEdgesImage());
 
-  //image(inputImage, 0, 0, sketchWidth, sketchHeight); // uncomment to show the video 
+  //image(inputImage, 0, 0, sketchWidth, sketchHeight); // uncomment to show the video
   //image(edgesImage, 0, 0, sketchWidth, sketchHeight); // uncomment to seed the edge detect image
 
   lines = findLines(edgesImage);
@@ -134,7 +131,7 @@ ArrayList<PVector> findLine(PImage edges, int startX, int startY) {
       y = (int) p.y;
     }
     return line;
-  } 
+  }
   else {
     return null;
   }
