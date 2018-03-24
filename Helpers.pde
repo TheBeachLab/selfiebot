@@ -21,15 +21,17 @@ void convertPixelLinesToPaperLines() {
   //  }
 }
 
+
+// Export to Gcode
 void exportToGcode(ArrayList<ArrayList<PVector>> lines) {
   float scaleRatio = 1.0 / sketchWidth * paperWidth;
 
   String outputFolder = "Export/";
   String prefix = "selfie-";
   String timeStamp = dateNow();
-  String fileName = outputFolder + prefix + timeStamp + ".camm";
+  String fileName = outputFolder + prefix + timeStamp + ".ngc";
   PrintWriter output = createWriter(fileName);
-  writeHeader(output);
+  writeGcodeHeader(output);
 
   for (ArrayList<PVector>line: lines) {
     boolean first = true;
@@ -37,31 +39,119 @@ void exportToGcode(ArrayList<ArrayList<PVector>> lines) {
       pt.mult(scaleRatio);
       pt.sub(paperHeight/ 2, paperWidth/2, 0);
       if (first) {
-        output.println("// first");  // draw line
+        output.println("G0" + " " + "Z" + penUp);
+        output.println("G0" + " " + "F" + motorFeedFast);
+        output.println("G0" + " " + "X" + pt.x + " " + "Y" + -(pt.y));          
+        output.println("G0" + " " + "Z" + penDown); 
+        output.println("G0" + " " + "F" + motorFeedSlow);
+        first = false;
+      } 
+      else {
+        output.println("G1" + " " + "X" + pt.x + " " + "Y" + -(pt.y));
+      }
+    }
+  }
+  writeGcodeFooter(output);
+  println("G-code: Exported to " + fileName);
+}
+
+// Export to .camm
+void exportToCAMM(ArrayList<ArrayList<PVector>> lines) {
+  float scaleRatio = 1.0 / sketchWidth * paperWidth;
+
+  String outputFolder = "Export/";
+  String prefix = "selfie-";
+  String timeStamp = dateNow();
+  String fileName = outputFolder + prefix + timeStamp + ".camm";
+  PrintWriter output = createWriter(fileName);
+  writeCAMMHeader(output);
+
+  for (ArrayList<PVector>line: lines) {
+    boolean first = true;
+    for (PVector pt: line) {
+      pt.mult(scaleRatio);
+      pt.sub(paperHeight/ 2, paperWidth/2, 0);
+      if (first) {
+        output.println("// first");  
         output.println("PU" + pt.x + "," + -(pt.y) + ";");  // draw line
         output.println("PU" + pt.x + "," + -(pt.y) + ";");  // draw line
         first = false;
       }
       else {
+        output.println("// not first");  
         output.println("PD" + pt.x + "," + -(pt.y) + ";");  // draw line
         output.println("PD" + pt.x + "," + -(pt.y) + ";");  // draw line
       }
     }
   }
-  writeFooter(output);
+  writeCAMMFooter(output);
   println("Roland .camm file: Exported to " + fileName);
 }
 
-void writeHeader(PrintWriter output) {
+void writeGcodeHeader(PrintWriter output) {
+  // writes an header with the required setup instructions for the GCode output file
+  output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
+  // basic configuration =>> G21 (millimiters) G90 (absolute mode) G64 (constant velocity mode) G40 (turn off radius compensation)
+  output.println("G21" + " " + "G90" + " " + "G64" + " " + "G40");
+  // output.println("( T0 : 0.8 )");
+  // T0 => tool select
+  // M6 ==> tool change
+  // output.println("T0 M6");
+  // G17 ==> select the XY plane
+  output.println("G17");
+  // M3 ==> start spindle clockwise
+  // S1000 ==> spindle speed
+  // output.println("M3 S1000");
+  // F... set stepper motors speed
+  // G0 X0.0 Y0.0 => send plotter head to 'home' position 
+  // G0 is movement with penup while G1 is movement with pen down -> not so sure about this! #ancheno
+  // G0 Z... ==> pen UP
+  output.println("G0" + " " + "Z" + penUp);
+  output.println("G0" + " " + "F" + motorFeedFast + " " + "X0.0" + " " +  "Y0.0"); 
+  output.println(" ");
+
+  // disegna i due assi X,Y
+  /*
+  output.println("G0" + " " + "Z" + penDown);
+   output.println("G0 X-205 Y0");
+   output.println("G0 X205 Y0");
+   output.println("G0" + " " + "Z" + penUp);
+   output.println("G0 X0 Y140");
+   output.println("G0" + " " + "Z" + penDown);
+   output.println("G0 X0 Y-140");
+   output.println("G0" + " " + "Z" + penUp);
+   output.println(" ");
+   */
+}
+
+void writeGcodeFooter(PrintWriter output) {
+  // writes a footer with the end instructions for the GCode output file
+  output.println(" ");
+  // G0 Z90.0
+  // G0 X0 Y0 => go home
+  // M5 => stop spindle
+  // M30 => stop execution
+  output.println("G0" + " " + "Z" + penUp);
+  //output.println("G0 Z90.0");
+  output.println("G0 X0 Y0");  
+  output.println("M5");
+  output.println("M30"); 
+  // finalize the GCode text file and quits the current Processing Sketch
+  output.flush();  // writes the remaining data to the file
+  output.close();  // finishes the output file
+}
+
+
+void writeCAMMHeader(PrintWriter output) {
   // writes an header with the required setup instructions for the CAMM-GL output file
-  // output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
+  output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
   output.println("PA;PA;!ST1;!FS" + force + ";VS" + velocity + ";");
   output.println("// end of header");
 }
 
-void writeFooter(PrintWriter output) {
+void writeCAMMFooter(PrintWriter output) {
   // writes a footer with the end instructions for the CAMM-GL output file
-  output.println("// footer start ");
+   output.println("// footer start ");
   // PU0,0: => go home
   output.println("PU0,0;");
 }

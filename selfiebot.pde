@@ -33,6 +33,14 @@ int paperHeight = 210;
 int sketchWidth = videoWidth;
 int sketchHeight = videoHeight;
 
+// Define pen UP and DOWN positions
+float penUp = 90.0;
+float penDown = 0.0;
+
+// Define Feed rate (stepper motors speed)
+float motorFeedSlow = 100.0;
+float motorFeedFast = 1000.0;
+
 // Define Roland Vinyl Cutter Velocity and Force (GS-24 GX-24)
 float velocity = 10.0; // cm/s
 float force = 120.0;   // g
@@ -94,9 +102,10 @@ void draw() {
 }
 
 void keyPressed() {
-  if (key == ' ') {
-    exportToGcode(lines);
-    saveFrame("./Export/selfie-" + dateNow() + ".png");
+  if (key == ' ') {                     // On spacebar press
+    exportToCAMM(lines);                 // export to .camm format
+    exportToGcode(lines);                 // export to Gcode format
+    saveFrame("./Export/selfie-" + dateNow() + ".png");  // and save the .png image
   }
 }
 
