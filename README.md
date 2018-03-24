@@ -9,10 +9,14 @@ Modifications
 At the moment it has been added a `.png` image for fab modules and it writes directly a `.camm` file for the Roland Vinyl Cutters.
 
 > WIP porting the vectors to the Roland CAMM-GL III file format. Units are not correct.
-
->At this moment I am debugging:
-* Footer does not appear
-* There are some vectors with PU and no PD (Points?)
+TODO
+Send file to roland 
+`lpr -P vinyl -l fabricated.camm`
+Check that is allright or fix
+In big paper, mark origin and send file
+Modify paper size and resend
+Fix units
+Send via processing
 
 Usage
 =====
@@ -20,9 +24,9 @@ Usage
 2. Download and install the [controlP5 library](http://www.sojamo.de/libraries/controlP5/) and the video library.
 3. Open the sketch and run it.
 4. Stand in front of the webcam.
-5. Press the spacebar to export the current image to a `.png` image and a `.camm` file.
+5. Press `i` to export the current image to a `.png`. Press `r` to export the current image to a `.camm` Roland file.  Press `g` to export the current image to a `.ngc` Gcode file.
 6. Load the Roland Vinyl Cutter with a piece of paper and replace the blade with the [penholder adapter](https://github.com/TheBeachLab/Roland_VinylDraw) and your favourite bic pen, pencil or marker.
-7. Option 1. Import the `.png` file into Fab Modules and proceed as if you were cutting vinyl. ~~Option 2: Send the `.camm` file to the vinyl cutter~~
+7. Option 1. Import the `.png` file into Fab Modules and proceed as if you were cutting vinyl. Option 2: Send the `.camm` file to the vinyl cutter `lpr -P vinyl -l file.camm`
 
 Credits
 =======

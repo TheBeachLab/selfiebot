@@ -1,0 +1,27 @@
+PA;!ST1;!FS120;VS10;
+PU;
+PU 0,0;
+ 
+PU;
+VS 20;
+PU 400,1000;
+PD;
+VS 5;
+PU;
+VS 20;
+PU 2920,1000;
+PD;
+VS 5;
+PU;
+VS 20;
+PU 400,1200;
+PD;
+VS 0;
+PU;
+VS 20;
+PU 400,1000;
+PD;
+VS 5;
+ 
+PU;
+PU 0,0;

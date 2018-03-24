@@ -37,7 +37,7 @@ void exportToGcode(ArrayList<ArrayList<PVector>> lines) {
     boolean first = true;
     for (PVector pt: line) {
       pt.mult(scaleRatio);
-      pt.sub(paperHeight/ 2, paperWidth/2, 0);
+      pt.sub(paperHeight/2, paperWidth/2, 0);
       if (first) {
         output.println("G0" + " " + "Z" + penUp);
         output.println("G0" + " " + "F" + motorFeedFast);
@@ -70,22 +70,24 @@ void exportToCAMM(ArrayList<ArrayList<PVector>> lines) {
     boolean first = true;
     for (PVector pt: line) {
       pt.mult(scaleRatio);
-      pt.sub(paperHeight/ 2, paperWidth/2, 0);
+      pt.sub(paperHeight/2, paperWidth/2, 0);
       if (first) {
-        output.println("// first");  
-        output.println("PU" + pt.x + "," + -(pt.y) + ";");  // draw line
-        output.println("PU" + pt.x + "," + -(pt.y) + ";");  // draw line
+        //output.println("// first");
+        output.println("PU;");  // pen up
+        output.println("VS " + rolandFeedFast + ";");  // set fast speed
+        output.println("PU " + pt.x + "," + -(pt.y) + ";");  // go to coordinates
+        output.println("PD;");  // pen down
+        output.println("VS " + rolandFeedSlow + ";");  // set fast speed
         first = false;
       }
       else {
-        output.println("// not first");  
-        output.println("PD" + pt.x + "," + -(pt.y) + ";");  // draw line
-        output.println("PD" + pt.x + "," + -(pt.y) + ";");  // draw line
+        //output.println("// not first");  
+        output.println("PD " + pt.x + "," + -(pt.y) + ";");  // draw line
       }
     }
   }
   writeCAMMFooter(output);
-  println("Roland .camm file: Exported to " + fileName);
+  println("Roland .camm file: Exported to " + fileName); 
 }
 
 void writeGcodeHeader(PrintWriter output) {
@@ -145,15 +147,22 @@ void writeGcodeFooter(PrintWriter output) {
 void writeCAMMHeader(PrintWriter output) {
   // writes an header with the required setup instructions for the CAMM-GL output file
   output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
-  output.println("PA;PA;!ST1;!FS" + force + ";VS" + velocity + ";");
-  output.println("// end of header");
+  output.println("PA;!ST1;!FS" + force + ";VS" + velocity + ";");
+  output.println("PU;"); // Pen up
+  output.println("PU 0.0,0.0;"); // Go to origin
+  //output.println("// end of header");
+  output.println(" ");
 }
 
 void writeCAMMFooter(PrintWriter output) {
   // writes a footer with the end instructions for the CAMM-GL output file
-   output.println("// footer start ");
+  output.println(" ");
   // PU0,0: => go home
-  output.println("PU0,0;");
+  output.println("PU;"); // pen up
+  output.println("PU 0.0,0.0;"); // go to origin
+  // finalize the CAMM text file and quits the current Processing Sketch
+  output.flush();  // writes the remaining data to the file
+  output.close();  // finishes the output file
 }
 
 // Return a string containing the current date/time.

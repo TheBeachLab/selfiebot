@@ -22,12 +22,12 @@ PImage inputImage, edgesImage;
 ArrayList<ArrayList<PVector>> lines;
 
 // Dimensions of the input video.
-int videoWidth = 1280;
-int videoHeight = 720;
+int videoWidth = 640;
+int videoHeight = 480;
 
 // Dimensions of the paper (in millimeters).
-int paperWidth = 297;  // A4
-int paperHeight = 210;
+int paperWidth = 100;  // A4
+int paperHeight = 200;
 
 // Dimensions of the Processing applet.
 int sketchWidth = videoWidth;
@@ -41,6 +41,10 @@ float penDown = 0.0;
 float motorFeedSlow = 100.0;
 float motorFeedFast = 1000.0;
 
+// Define roland velocity (cm/s)
+float rolandFeedSlow = 5.0;
+float rolandFeedFast = 20.0;
+
 // Define Roland Vinyl Cutter Velocity and Force (GS-24 GX-24)
 float velocity = 10.0; // cm/s
 float force = 120.0;   // g
@@ -51,7 +55,7 @@ int complexity = 1;
 
 void setup() {
   frameRate(30);
-  size(1280, 720);
+  size(640, 480);
   video = new Capture(this, videoWidth, videoHeight);
   video.start();
   cp5 = new ControlP5(this);
@@ -102,9 +106,25 @@ void draw() {
 }
 
 void keyPressed() {
-  if (key == ' ') {                     // On spacebar press
-    exportToCAMM(lines);                 // export to .camm format
-    exportToGcode(lines);                 // export to Gcode format
+  if (key == 'i') {                                      // On i press
+    saveFrame("./Export/selfie-" + dateNow() + ".png");  // and save the .png image
+  }
+  else if (key == 'r') {                                 // On r press
+    exportToCAMM(lines);                                 // export to .camm format
+    saveFrame("./Export/selfie-" + dateNow() + ".png");  // and save the .png image
+  }
+  else if (key == 'g') {                                 // On g press
+    exportToGcode(lines);                                // export to Gcode format
+    saveFrame("./Export/selfie-" + dateNow() + ".png");  // and save the .png image
+  }
+  else if (key == 'a') {                                 // On a press
+    exportToCAMM(lines);                                 // export to .camm format
+    exportToGcode(lines);                                // export to Gcode format
+    saveFrame("./Export/selfie-" + dateNow() + ".png");  // and save the .png image
+  }
+  else if (key == 's') {                                 // On a press
+    exportToGcode(lines);                                // export to Gcode format
+    exportToCAMM(lines);                                 // export to .camm format
     saveFrame("./Export/selfie-" + dateNow() + ".png");  // and save the .png image
   }
 }
