@@ -21,7 +21,7 @@ CannyEdgeDetector detector;
 PImage inputImage, edgesImage;
 ArrayList<ArrayList<PVector>> lines;
 
-// Dimensions of the input video.
+// Dimensions of the input video in pixels.
 int videoWidth = 640;
 int videoHeight = 480;
 
@@ -42,12 +42,12 @@ float motorFeedSlow = 100.0;
 float motorFeedFast = 1000.0;
 
 // Define roland velocity (cm/s)
-float rolandFeedSlow = 5.0;
-float rolandFeedFast = 20.0;
+int rolandFeedSlow = 5;
+int rolandFeedFast = 20;
 
 // Define Roland Vinyl Cutter Velocity and Force (GS-24 GX-24)
-float velocity = 10.0; // cm/s
-float force = 120.0;   // g
+int velocity = 10; // cm/s
+int force = 120;   // g
 
 int divider = 1;
 PImage test;

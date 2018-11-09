@@ -57,7 +57,7 @@ void exportToGcode(ArrayList<ArrayList<PVector>> lines) {
 
 // Export to .camm
 void exportToCAMM(ArrayList<ArrayList<PVector>> lines) {
-  float scaleRatio = 1.0 / sketchWidth * paperWidth;
+  float scaleRatio = 13.3;// / sketchWidth * paperWidth;
 
   String outputFolder = "Export/";
   String prefix = "selfie-";
@@ -70,7 +70,7 @@ void exportToCAMM(ArrayList<ArrayList<PVector>> lines) {
     boolean first = true;
     for (PVector pt: line) {
       pt.mult(scaleRatio);
-      pt.sub(paperHeight/2, paperWidth/2, 0);
+      pt.sub(0, sketchHeight, 0);
       if (first) {
         //output.println("// first");
         output.println("PU;");  // pen up
@@ -92,7 +92,7 @@ void exportToCAMM(ArrayList<ArrayList<PVector>> lines) {
 
 void writeGcodeHeader(PrintWriter output) {
   // writes an header with the required setup instructions for the GCode output file
-  output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
+  // output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
   // basic configuration =>> G21 (millimiters) G90 (absolute mode) G64 (constant velocity mode) G40 (turn off radius compensation)
   output.println("G21" + " " + "G90" + " " + "G64" + " " + "G40");
   // output.println("( T0 : 0.8 )");
@@ -146,10 +146,10 @@ void writeGcodeFooter(PrintWriter output) {
 
 void writeCAMMHeader(PrintWriter output) {
   // writes an header with the required setup instructions for the CAMM-GL output file
-  output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
+  // output.println("( Made with Processing. Paper size: "  + paperWidth + "x" + paperHeight + "mm )");
   output.println("PA;!ST1;!FS" + force + ";VS" + velocity + ";");
   output.println("PU;"); // Pen up
-  output.println("PU 0.0,0.0;"); // Go to origin
+  output.println("PU 0,0;"); // Go to origin
   //output.println("// end of header");
   output.println(" ");
 }
