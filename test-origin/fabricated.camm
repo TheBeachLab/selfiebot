@@ -1,4 +1,6 @@
-PA;!ST1;!FS120.0;VS10.0;
+PA; // plot absolute PR; is plot relative
+
+!ST1;!FS120.0;VS10.0;
 PU;
 PU 0,0;
 VS 20;
