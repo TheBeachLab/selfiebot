@@ -8,6 +8,15 @@ This is a modified version of the [original selfiebot project](https://github.co
 
 At the moment the scrip writes a `.png` image for using it with fab modules and it writes directly a `.camm` file for the Roland Vinyl Cutters.
 
+## Roland GS-24 specs
+
+- Cut speed 10-500 mm/s
+- Pen force 30-350 g
+- Mechanical resolution 0.0125 mm/step that is 80 steps/mm
+- Software resolution 0.0250 mm/step that is 40 steps/mm
+- Instruction system CAMM-GL III
+- Power DC 24 V, 2.8 A, 30W (for mobile labs)
+
 ## Roland CAMM-GL III file format
 
 Trying to derive from [inkcut project](https://github.com/codelv/inkcut)
