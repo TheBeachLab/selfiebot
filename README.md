@@ -6,7 +6,7 @@ This is a modified version of the [original selfiebot project](https://github.co
 
 ## Modifications
 
-At the moment the scrip writes a `.png` image for using it with fab modules and it writes directly a `.camm` file for the Roland Vinyl Cutters.
+The scrip writes a `.png` image, writes a `.camm` file for the Roland Vinyl Cutters and sends it via `cat`.
 
 ## Roland GS-24 specs
 
@@ -29,11 +29,11 @@ Trying to derive from [inkcut project](https://github.com/codelv/inkcut)
 4. Stand in front of the webcam.
 5. Press `i` to export the current image to a `.png`. Press `r` to export the current image to a `.camm` Roland file.  Press `g` to export the current image to a `.ngc` Gcode file.
 6. Load the Roland Vinyl Cutter with a piece of paper and replace the blade with the [penholder adapter](https://github.com/TheBeachLab/Roland_VinylDraw) and your favourite bic pen, pencil or marker.
-7. Option 1. Import the `.png` file into Fab Modules and proceed as if you were cutting vinyl. Option 2: Send the `.camm` file to the vinyl cutter `lpr -P vinyl -l file.camm`
+7. Send the `.camm` file to the vinyl cutter `cat file.camm > /dev/usb/lp0`
 
 ## TODO
 
-* Send file to roland `lpr -P vinyl -l fabricated.camm`
+* Send file to roland `cat fabricated.camm > /dev/usb/lp0`
 * Check that is allright or fix
 * In big paper, mark origin and send file
 * Modify paper size and resend
